@@ -18,8 +18,8 @@ const DOCS = [
     border: "rgba(234,179,8,0.28)",
     glow: "rgba(234,179,8,0.12)",
     iconBg: "rgba(234,179,8,0.12)",
-    dlHref: "https://drive.google.com/uc?export=download&id=1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS",
-    viewHref: "https://drive.google.com/file/d/1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS/view?usp=drivesdk",
+    dlHref: "/whitepaper",
+    viewHref: "/whitepaper",
   },
   {
     id: "pitchdeck",
@@ -72,8 +72,8 @@ const DOCS = [
     border: "rgba(96,165,250,0.28)",
     glow: "rgba(96,165,250,0.10)",
     iconBg: "rgba(96,165,250,0.12)",
-    dlHref: "https://drive.google.com/uc?export=download&id=1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS",
-    viewHref: "https://drive.google.com/file/d/1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS/view?usp=drivesdk",
+    dlHref: "/whitepaper",
+    viewHref: "/whitepaper",
   },
 ];
 

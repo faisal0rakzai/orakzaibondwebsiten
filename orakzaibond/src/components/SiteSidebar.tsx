@@ -46,7 +46,7 @@ const DOC_LINKS = [
   {
     label: "Whitepaper",
     icon: <BookOpen className="w-4 h-4" />,
-    href: "https://drive.google.com/file/d/1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS/view?usp=drivesdk",
+    href: "/whitepaper",
   },
   {
     label: "Security Review",

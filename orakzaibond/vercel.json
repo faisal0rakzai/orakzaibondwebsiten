@@ -6,12 +6,12 @@
   "redirects": [
     {
       "source": "/whitepaper",
-      "destination": "https://drive.google.com/uc?export=download&id=1WSYlOs9UHvMUlfBG6QMocQvrJDSTAnbh",
+      "destination": "/docs/whitepaper.pdf",
       "permanent": false
     },
     {
       "source": "/Whitepaper",
-      "destination": "https://drive.google.com/uc?export=download&id=1WSYlOs9UHvMUlfBG6QMocQvrJDSTAnbh",
+      "destination": "/docs/whitepaper.pdf",
       "permanent": false
     },
     {

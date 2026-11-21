@@ -64,7 +64,7 @@ const PAGE_ITEMS = [
 
 const DOC_LINKS = [
   { label: "OKBOND PDF",      icon: FileText, href: "https://drive.google.com/file/d/1Q6bClDOeBCBxBZfKdD9SnqSpNFrG-u7A/view?usp=drivesdk" },
-  { label: "Whitepaper",      icon: BookOpen, href: "https://drive.google.com/file/d/1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS/view?usp=drivesdk" },
+  { label: "Whitepaper",      icon: BookOpen, href: "/whitepaper" },
   { label: "Security Review", icon: Shield,   href: "https://drive.google.com/file/d/1T_isI9xvQQr_Mbkt1YyBvNF4kLUOcVgj/view?usp=drivesdk" },
 ];
 

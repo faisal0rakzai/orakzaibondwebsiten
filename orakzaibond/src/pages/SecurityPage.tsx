@@ -43,8 +43,8 @@ const AUDIT_DOCUMENTS = [
   {
     label: "OKBOND Whitepaper",
     date: "2026",
-    viewUrl: "https://drive.google.com/file/d/1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS/view?usp=drivesdk",
-    downloadUrl: "https://drive.google.com/uc?export=download&id=1Psz7Iy5aREH_ltKPGLglTwR2ln1VTHWS",
+    viewUrl: "/whitepaper",
+    downloadUrl: "/whitepaper",
     badge: "Technical",
     badgeColor: "#60A5FA",
   },
