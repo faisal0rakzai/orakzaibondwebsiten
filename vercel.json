@@ -73,6 +73,10 @@
   ],
   "rewrites": [
     {
+      "source": "/logo",
+      "destination": "/logo.png"
+    },
+    {
       "source": "/faisal-orakzai",
       "destination": "/faisal-orakzai.html"
     },
