@@ -14,6 +14,9 @@ export default defineConfig({
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
   },
+  server: {
+    allowedHosts: true,
+  },
   build: {
     outDir: "dist",
     emptyOutDir: true,
