@@ -1,19 +1,36 @@
-import { ArrowLeft, ArrowRight, ChevronDown, Search, SlidersHorizontal, Sparkles } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Search, SlidersHorizontal, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/components/SEO";
 import { HUB_COUNTRIES, categoriesForMarket, catalogSlug } from "@/data/serviceCatalog";
 import "./ServicesMarketplace.css";
+
+const REGION_ORDER = ["Asia", "Europe", "Africa", "North America", "South America", "Oceania", "Other"];
 
 export default function AllServicesPage() {
   const initialCode = typeof window !== "undefined" ? window.localStorage.getItem("okbond-service-country") ?? "PK" : "PK";
   const [countryCode, setCountryCode] = useState(initialCode);
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
-  const country = HUB_COUNTRIES.find((item) => item.code === countryCode) ?? HUB_COUNTRIES[0];
+  const [countryOpen, setCountryOpen] = useState(false);
+  const [countryQuery, setCountryQuery] = useState("");
+  const [recentCodes, setRecentCodes] = useState<string[]>([]);
+  const country = HUB_COUNTRIES.find((item) => item.code === countryCode) ?? HUB_COUNTRIES.find((item) => item.code === "PK") ?? HUB_COUNTRIES[0];
   const categories = categoriesForMarket(country.code);
   const totalServices = categories.reduce((total, category) => total + category.services.length, 0);
   const normalizedQuery = query.trim().toLowerCase();
+
+  useEffect(() => {
+    try { setRecentCodes(JSON.parse(window.localStorage.getItem("okbond-recent-countries") ?? "[]")); } catch { setRecentCodes([]); }
+  }, []);
+
+  const countryGroups = useMemo(() => {
+    const search = countryQuery.trim().toLowerCase();
+    const matches = HUB_COUNTRIES.filter((item) => !search || `${item.name} ${item.code}`.toLowerCase().includes(search));
+    return REGION_ORDER.map((region) => ({ region, countries: matches.filter((item) => item.region === region) })).filter((group) => group.countries.length > 0);
+  }, [countryQuery]);
+
+  const recentCountries = recentCodes.map((code) => HUB_COUNTRIES.find((item) => item.code === code)).filter(Boolean) as typeof HUB_COUNTRIES;
 
   const filteredCategories = useMemo(() => categories.map((category) => ({
     ...category,
@@ -28,7 +45,14 @@ export default function AllServicesPage() {
 
   const chooseCountry = (code: string) => {
     setCountryCode(code);
-    try { window.localStorage.setItem("okbond-service-country", code); } catch { /* storage may be unavailable */ }
+    setCountryOpen(false);
+    setCountryQuery("");
+    const nextRecent = [code, ...recentCodes.filter((item) => item !== code)].slice(0, 5);
+    setRecentCodes(nextRecent);
+    try {
+      window.localStorage.setItem("okbond-service-country", code);
+      window.localStorage.setItem("okbond-recent-countries", JSON.stringify(nextRecent));
+    } catch { /* storage may be unavailable */ }
   };
 
   return (
@@ -52,9 +76,17 @@ export default function AllServicesPage() {
 
         <section className="all-services-page__controls" aria-label="Service filters">
           <label className="all-services-page__search"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search services or categories" aria-label="Search all services" /><kbd>/</kbd></label>
-          <label className="all-services-page__country"><span>{country.flag}</span><select value={country.code} onChange={(event) => chooseCountry(event.target.value)} aria-label="Select country">{HUB_COUNTRIES.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select><ChevronDown size={15} /></label>
+          <div className="all-services-country-picker">
+            <button type="button" className="all-services-page__country" aria-haspopup="listbox" aria-expanded={countryOpen} onClick={() => setCountryOpen((open) => !open)}><span>{country.flag}</span><span className="all-services-page__country-name">{country.name}</span><small>{country.code}</small><ChevronDown size={15} /></button>
+            {countryOpen && <div className="all-services-country-menu" role="listbox" aria-label="Select country">
+              <label className="all-services-country-menu__search"><Search size={14} /><input autoFocus value={countryQuery} onChange={(event) => setCountryQuery(event.target.value)} placeholder="Search 249 countries" aria-label="Search countries" /></label>
+              {!countryQuery && recentCountries.length > 0 && <div className="all-services-country-menu__section"><span>Recently selected</span><div className="all-services-country-menu__recent">{recentCountries.map((item) => <button type="button" key={item.code} onClick={() => chooseCountry(item.code)}><span>{item.flag}</span>{item.name}<small>{item.code}</small></button>)}</div></div>}
+              <div className="all-services-country-menu__list">{countryGroups.map((group) => <div key={group.region}><p>{group.region}</p>{group.countries.map((item) => <button type="button" role="option" aria-selected={item.code === country.code} key={item.code} onClick={() => chooseCountry(item.code)}><span>{item.flag}</span><span>{item.name}</span><small>{item.code}</small>{item.code === country.code && <Check size={14} />}</button>)}</div>)}</div>
+            </div>}
+          </div>
         </section>
 
+        <div className="all-services-page__availability"><span className="all-services-page__pulse" /> <strong>{country.code}</strong> service availability follows provider coverage and local compliance <span>·</span> {country.region}</div>
         <div className="all-services-page__summary"><p><span className="all-services-page__pulse" /> {country.name} <b>·</b> {totalServices} service pathways</p><span className="all-services-page__filter-label"><SlidersHorizontal size={13} /> Filter by category</span></div>
         <nav className="all-services-page__tabs" aria-label="Filter by category">
           <button type="button" className={activeCategory === "all" ? "is-active" : ""} onClick={() => setActiveCategory("all")}>All services <span>{totalServices}</span></button>
